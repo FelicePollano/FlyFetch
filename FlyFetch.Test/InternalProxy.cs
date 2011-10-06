@@ -89,14 +89,14 @@ namespace FlyFetch.Test
 
             #endregion
         }
-
+        readonly string CIAO = "CIAO";
         [TestMethod]
         public void UseInternalProxyFactory()
         {
             var item = ProxyFactory.CreateProxy<SampleViewItem>(new DummyHitChecker());
             (item as IPageableElement).Loaded = true;
-            item.S1 = "CIAO";
-            Assert.AreEqual("CIAO", item.S1);
+            item.S1 = CIAO;
+            Assert.AreEqual(CIAO, item.S1);
             Assert.IsTrue(typeof(SampleViewItem).IsAssignableFrom(item.GetType()));
             var other = ProxyFactory.CreateProxy<OtherViewItem>(new DummyHitChecker());
             Assert.IsTrue(typeof(INotifyPropertyChanged).IsAssignableFrom(other.GetType()));
@@ -116,13 +116,13 @@ namespace FlyFetch.Test
             var read = item1.S1;
             read = item1.S2;
             read = item1.S3;
-            item1.S4 = "CIAO";
+            item1.S4 = CIAO;
             Assert.AreEqual(3, hitTracker.Hits.Count);
             Assert.IsTrue(hitTracker.Hits.Any(k=>k==6));
             (item1 as IPageableElement).Loaded = true;
             read = item1.S4;
             Assert.AreEqual(3, hitTracker.Hits.Count);
-            Assert.AreEqual("CIAO", read);
+            Assert.AreEqual(CIAO, read);
         }
     }
 }
