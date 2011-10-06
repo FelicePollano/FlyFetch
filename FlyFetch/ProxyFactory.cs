@@ -29,7 +29,8 @@ namespace FlyFetch
         {
             AssemblyName name = new AssemblyName("pageable_proxies");
             assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, System.Reflection.Emit.AssemblyBuilderAccess.RunAndSave);
-            moduleBuilder = assemblyBuilder.DefineDynamicModule("main");
+            moduleBuilder = assemblyBuilder.DefineDynamicModule("main","pageable_proxies.dll");
+           
         }
 
         public static T CreateProxy<T>(IPageHit hitChecker)
@@ -95,13 +96,22 @@ namespace FlyFetch
 
                 foreach (var property in parent.GetProperties().Where(p => p.CanRead && p.GetGetMethod().IsVirtual))
                 {
-                    //OverrideGetter(tbuilder,property,get_Loaded,hitField,get_PageIndex);
+                    OverrideGetter(tbuilder,property,get_Loaded,hitField,get_PageIndex);
                 }
 
                 var tt = tbuilder.CreateType();
                 cache[parent] = tt;
                 
-                assemblyBuilder.Save("duppy.dll");
+#if SAVEASM
+                try
+                {
+                    assemblyBuilder.Save("pageable_proxies.dll");
+                }
+                catch (InvalidOperationException)
+                {
+                    //save twice not allowed
+                }
+#endif
             }
             return cache[parent];
         }
@@ -127,7 +137,7 @@ namespace FlyFetch
             
             gen.Emit(OpCodes.Ldarg_0);
             gen.Emit(OpCodes.Call, getLoaded);
-            gen.Emit(OpCodes.Brtrue_S,0x11);
+            gen.Emit(OpCodes.Brtrue_S,(byte)0x11);
             gen.Emit(OpCodes.Ldarg_0);
             gen.Emit(OpCodes.Ldfld, hitField);
             gen.Emit(OpCodes.Ldarg_0);

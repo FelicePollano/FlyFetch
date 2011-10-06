@@ -73,6 +73,23 @@ namespace FlyFetch.Test
             #endregion
         }
 
+        class TrackHitChecker : IPageHit
+        {
+            public TrackHitChecker()
+            {
+                Hits = new List<int>();
+            }
+            public List<int> Hits { get; private set; }
+            #region IPageHit Members
+
+            public void Hit(int npage)
+            {
+                Hits.Add(npage);
+            }
+
+            #endregion
+        }
+
         [TestMethod]
         public void UseInternalProxyFactory()
         {
@@ -89,6 +106,23 @@ namespace FlyFetch.Test
             pageable.PageIndex = 1;
             Assert.IsTrue(pageable.Loaded);
             Assert.AreEqual(1, pageable.PageIndex);
+        }
+        [TestMethod]
+        public void CheckCount()
+        {
+            TrackHitChecker hitTracker = new TrackHitChecker();
+            var item1 = ProxyFactory.CreateProxy<SampleViewItem>(hitTracker);
+            (item1 as IPageableElement).PageIndex=6;
+            var read = item1.S1;
+            read = item1.S2;
+            read = item1.S3;
+            item1.S4 = "CIAO";
+            Assert.AreEqual(3, hitTracker.Hits.Count);
+            Assert.IsTrue(hitTracker.Hits.Any(k=>k==6));
+            (item1 as IPageableElement).Loaded = true;
+            read = item1.S4;
+            Assert.AreEqual(3, hitTracker.Hits.Count);
+            Assert.AreEqual("CIAO", read);
         }
     }
 }
