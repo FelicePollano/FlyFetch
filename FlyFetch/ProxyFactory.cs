@@ -8,18 +8,6 @@ using System.Threading;
 
 namespace FlyFetch
 {
-    public interface IPageableElement
-    {
-        int PageIndex { get; set; }
-        bool Loaded { get; set; }
-    }
-
-    public interface IPageHit
-    {
-        void Hit(int npage);
-    }
-        
-
     public class ProxyFactory
     {
         static AssemblyBuilder assemblyBuilder;

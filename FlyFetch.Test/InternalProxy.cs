@@ -55,7 +55,7 @@ namespace FlyFetch.Test
         }
         readonly string CIAO = "CIAO";
         [TestMethod]
-        public void UseInternalProxyFactory()
+        public void InternalProxyFactoryCreateAWorkingType()
         {
             var item = ProxyFactory.CreateProxy<SampleViewItem>(new DummyHitChecker());
             (item as IPageableElement).Loaded = true;
@@ -72,7 +72,7 @@ namespace FlyFetch.Test
             Assert.AreEqual(1, pageable.PageIndex);
         }
         [TestMethod]
-        public void CheckCount()
+        public void CheckCountOfDirtyPageHit()
         {
             TrackHitChecker hitTracker = new TrackHitChecker();
             var item1 = ProxyFactory.CreateProxy<SampleViewItem>(hitTracker);

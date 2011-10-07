@@ -45,6 +45,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DummyForCopyIL.cs" />
+    <Compile Include="FetchingCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InternalProxy.cs" />
   </ItemGroup>
