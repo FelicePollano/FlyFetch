@@ -8,18 +8,18 @@ using System.Threading;
 
 namespace FlyFetch
 {
-    class PageInterceptor<T> : IPageHit where T : new()
+    class PageInterceptor<T,TColl> : IPageHit where T : new() where TColl:IList<T>,new()
     {
-          
-        Action<Collection<T>, int, int> pageFiller;
+
+        IPageProvider<T, TColl> pageFiller;
         int pageSize;
-        Collection<T> collection;
+        TColl collection;
         HashSet<int> pagesHit = new HashSet<int>();
 
-        public PageInterceptor(Action<Collection<T>, int, int> pageFiller
+        public PageInterceptor(IPageProvider<T,TColl> pageFiller
                                 , int pageSize
-                                , Collection<T> collection
-                                ,Action<Exception> error
+                                , TColl collection
+                               
                                 )
         {
             this.pageFiller = pageFiller;
@@ -29,9 +29,34 @@ namespace FlyFetch
         #region IPageHit Members
         public void Hit(int npage)
         {
-            if (pagesHit.Contains(npage))
+            bool fetch = false;
+            lock (pagesHit)
             {
-                pagesHit.Add(npage);
+                if (!pagesHit.Contains(npage))
+                {
+                    pagesHit.Add(npage);
+                    fetch = true;
+                }
+            }
+            if (fetch)
+            {
+                pageFiller.Completed += (s, e) =>
+                    {
+                        lock (pagesHit)
+                        {
+                            pagesHit.Remove(npage);
+                        }
+                        foreach (var pe in collection.Skip(npage * pageSize).Take(pageSize).OfType<IPageableElement>())
+                            pe.Loaded = true;
+
+                    };
+                //prepare single item data
+                int first = npage * pageSize;
+                for (int i = first; i < first + pageSize; ++i)
+                {
+                    collection[i] = new T();
+                }
+                pageFiller.GetAPage(collection, npage * pageSize, pageSize);
             }
 
         }

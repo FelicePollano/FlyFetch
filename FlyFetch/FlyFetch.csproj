@@ -42,8 +42,10 @@
   <ItemGroup>
     <Compile Include="Cast.cs" />
     <Compile Include="CollectionFactory.cs" />
+    <Compile Include="ICountProvider.cs" />
     <Compile Include="IPageableElement.cs" />
     <Compile Include="IPageHit.cs" />
+    <Compile Include="IPageProvider.cs" />
     <Compile Include="PageInterceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyFactory.cs" />

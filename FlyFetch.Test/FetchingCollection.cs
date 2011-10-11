@@ -16,14 +16,13 @@ namespace FlyFetch.Test
         [TestMethod]
         public void BasicFactory()
         {
-            ManualResetEvent created = new ManualResetEvent(false);
             ObservableCollection<SampleViewItem> coll=null;
-            CollectionFactory.Create<SampleViewItem>(pageSize,
-                                                    (c, first, count) => { },
-                                                    () => totalLen,
-                                                    (c) => { coll = c; created.Set(); }
+            CollectionFactory.Create<SampleViewItem, ObservableCollection<SampleViewItem>>(pageSize,
+                                                    new FakePageProvider<ObservableCollection<SampleViewItem>>(),
+                                                    new FakeCountProvider(totalLen),
+                                                    (c) => { coll = c;  }
                                                     );
-            Assert.IsTrue(created.WaitOne(maxWait));
+            
             Assert.IsNotNull(coll);
             Assert.AreEqual(totalLen, coll.Count);
             Assert.IsTrue(coll.All(k => k is IPageableElement));
@@ -39,20 +38,19 @@ namespace FlyFetch.Test
         [TestMethod]
         public void PageHitShouldLoadPagesFromDatasource()
         {
-            ManualResetEvent created = new ManualResetEvent(false);
-            ManualResetEvent fetched = new ManualResetEvent(false);
+          
             ObservableCollection<SampleViewItem> coll = null;
-            CollectionFactory.Create<SampleViewItem>(pageSize,
-                                                    (c, first, count) => { GetAPage(c,first,count); fetched.Set(); },
-                                                    () => totalLen,
-                                                    (c) => { coll = c; created.Set(); }
+            CollectionFactory.Create<SampleViewItem,ObservableCollection<SampleViewItem>>(pageSize,
+                                                    new FakePageProvider<ObservableCollection<SampleViewItem>>(),
+                                                    new FakeCountProvider(totalLen),
+                                                    (c) => { coll = c;  }
                                                     );
-            Assert.IsTrue(created.WaitOne(maxWait));
+            
             var itemInpage0 = coll[pageSize / 2];
             var xxx = itemInpage0.S1; // force to load
-            Assert.IsTrue(fetched.WaitOne(maxWait));
-            Assert.IsTrue((itemInpage0 as IPageableElement).Loaded);
-            Assert.AreEqual("S1=" + (pageSize / 2).ToString(), itemInpage0.S1);
+
+            int index = pageSize / 2;
+            Assert.AreEqual("S1=" + index.ToString(), coll[index].S1);
         }
 
         private void GetAPage(Collection<SampleViewItem> c, int first, int count)
@@ -61,6 +59,48 @@ namespace FlyFetch.Test
             {
                 c[i].S1 = "S1=" + i.ToString();
             }
+        }
+
+        class FakeCountProvider : ICountProvider
+        {
+            int len;
+            public FakeCountProvider(int len)
+            {
+                this.len = len;
+            }
+
+            #region ICountProvider Members
+
+            public void GetCount()
+            {
+                CountAvailable(this, new CountEventArgs(len));
+            }
+
+            public event EventHandler<CountEventArgs> CountAvailable;
+
+            #endregion
+        }
+
+        class FakePageProvider<TColl> : IPageProvider<SampleViewItem, TColl> where TColl : IList<SampleViewItem>
+        {
+            #region IPageProvider<T,TColl> Members
+
+            public void GetAPage(TColl collection, int first, int count)
+            {
+                for (int i = first; i < first + count; ++i)
+                {
+                    collection[i].S1 = "S1=" + i.ToString();
+                    collection[i].S2 = "S2=" + i.ToString();
+                    collection[i].S3 = "S3=" + i.ToString();
+                    collection[i].S4 = "S4=" + i.ToString();
+                    collection[i].S5 = "S5=" + i.ToString();
+                }
+                Completed(this, EventArgs.Empty);
+            }
+
+            public event EventHandler Completed;
+
+            #endregion
         }
     }
 }
