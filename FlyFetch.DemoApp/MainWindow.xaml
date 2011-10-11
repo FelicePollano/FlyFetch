@@ -1,0 +1,15 @@
+﻿<Window x:Class="FlyFetch.DemoApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cm="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="MainWindow" Height="600" Width="800">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <cm:ActionMessage MethodName="Loaded"></cm:ActionMessage>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+        <Grid>
+        
+    </Grid>
+</Window>
