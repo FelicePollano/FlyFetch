@@ -1,5 +1,6 @@
 # Ignore file for Visual Studio 2008/2010
 
+
 *.obj
 *.exe
 *.pdb
