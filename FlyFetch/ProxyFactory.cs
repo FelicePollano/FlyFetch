@@ -82,7 +82,7 @@ namespace FlyFetch
                 gen.Emit(OpCodes.Ret);
 
 
-                foreach (var property in parent.GetProperties().Where(p => p.CanRead && p.GetGetMethod().IsVirtual))
+                foreach (var property in parent.GetProperties(BindingFlags.DeclaredOnly|BindingFlags.Instance|BindingFlags.Public).Where(p => p.CanRead && p.GetGetMethod().IsVirtual))
                 {
                     OverrideGetter(tbuilder,property,get_Loaded,hitField,get_PageIndex);
                 }

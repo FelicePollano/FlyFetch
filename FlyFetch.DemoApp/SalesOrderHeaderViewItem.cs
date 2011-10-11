@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace FlyFetch.DemoApp
 {
-    public class SalesOrderHeaderViewItem:INotifyPropertyChanged
+    public class SalesOrderHeaderViewItem:PropertyChangedBase
     {
         public SalesOrderHeaderViewItem()
         {
@@ -21,7 +21,7 @@ namespace FlyFetch.DemoApp
         public virtual string SalesOrderNumber
         {
             get { return salesOrderNumber; }
-            set { salesOrderNumber = value; PropertyChanged(this, new PropertyChangedEventArgs("SalesOrderNumber")); }
+            set { salesOrderNumber = value; NotifyOfPropertyChange(() => SalesOrderNumber); }
         }
 
         private DateTime dueDate;
@@ -29,7 +29,7 @@ namespace FlyFetch.DemoApp
         public virtual DateTime DueDate
         {
             get { return dueDate; }
-            set { dueDate = value; PropertyChanged(this, new PropertyChangedEventArgs("DueDate")); }
+            set { dueDate = value; NotifyOfPropertyChange(() => DueDate); }
         }
 
         private DateTime orderDate;
@@ -37,14 +37,14 @@ namespace FlyFetch.DemoApp
         public virtual DateTime OrderDate
         {
             get { return orderDate; }
-            set { orderDate = value; PropertyChanged(this, new PropertyChangedEventArgs("OrderDate")); }
+            set { orderDate = value; NotifyOfPropertyChange(() => OrderDate); }
         }
         private DateTime? shipDate;
 
         public virtual DateTime? ShipDate
         {
             get { return shipDate; }
-            set { shipDate = value; PropertyChanged(this, new PropertyChangedEventArgs("ShipDate")); }
+            set { shipDate = value; NotifyOfPropertyChange(() => ShipDate); }
         }
 
         private string contact;
@@ -52,14 +52,14 @@ namespace FlyFetch.DemoApp
         public virtual string   Contact
         {
             get { return contact; }
-            set { contact = value; PropertyChanged(this, new PropertyChangedEventArgs("Contact")); }
+            set { contact = value; NotifyOfPropertyChange(() => Contact); }
         }
         private string agent;
 
         public virtual string Agent
         {
             get { return agent; }
-            set { agent = value; PropertyChanged(this, new PropertyChangedEventArgs("Agent")); }
+            set { agent = value; NotifyOfPropertyChange(() => Agent); }
         }
 
 
@@ -68,15 +68,8 @@ namespace FlyFetch.DemoApp
         public virtual string Comment
         {
             get { return comment; }
-            set { comment = value; PropertyChanged(this, new PropertyChangedEventArgs("Comment")); }
+            set { comment = value; NotifyOfPropertyChange(() => Comment); }
         }
-
-
-
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        #endregion
+      
     }
 }
