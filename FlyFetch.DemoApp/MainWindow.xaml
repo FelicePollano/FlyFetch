@@ -2,7 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cm="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:ext="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit.Extended"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+         TextOptions.TextFormattingMode="Display"
         Title="MainWindow" Height="600" Width="800">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -10,6 +12,39 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
         <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label FontSize="14" FontWeight="Bold">Total record=</Label>
+            <Label Foreground="GreenYellow" FontSize="14" FontWeight="Bold" Content="{Binding Count}"></Label>
+            <Label FontSize="14" FontWeight="Bold">Data source query=</Label>
+            <Ellipse Height="12" Width="12" Stroke="Black" StrokeThickness="1" Fill="{Binding DataSourceHit, Converter={StaticResource boolToSemaphore}}"/>
+        </StackPanel>
+        <ext:BusyIndicator Grid.Row="1" IsBusy="{Binding Busy}">
+
+            <DataGrid  x:Name="Results" Foreground="Maroon"  CanUserAddRows="False" SelectionMode="Single"  GridLinesVisibility="None" FontWeight="Bold"  FontSize="14"  AutoGenerateColumns="False" ItemsSource="{Binding Items}" >
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Setter Property="Foreground" Value="DarkBlue"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="Light"/>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn CanUserSort="False" Header="Order Nr" Width="80" Binding="{Binding Path=SalesOrderNumber}" ></DataGridTextColumn>
+                    <DataGridTextColumn CanUserSort="False" Header="Due date" Width="90" Binding="{Binding Path=DueDate}" ></DataGridTextColumn>
+                    <DataGridTextColumn CanUserSort="False" Header="Order Date" Width="90" Binding="{Binding Path=OrderDate}" ></DataGridTextColumn>
+                    <DataGridTextColumn CanUserSort="False" Header="Ship Date" Width="90" Binding="{Binding Path=ShipDate}" ></DataGridTextColumn>
+                    <DataGridTextColumn CanUserSort="False" Header="Contact" Width="160" Binding="{Binding Path=Contact}" ></DataGridTextColumn>
+                    <DataGridTextColumn CanUserSort="False" Header="Agent" Width="160" Binding="{Binding Path=Agent}" ></DataGridTextColumn>
+                    <DataGridTextColumn CanUserSort="False" Header="Note" Width="260" Binding="{Binding Path=Comment}" ></DataGridTextColumn>
+                </DataGrid.Columns>
+             
+            </DataGrid>
+
+        </ext:BusyIndicator>
     </Grid>
 </Window>

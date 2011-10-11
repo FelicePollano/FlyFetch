@@ -7,6 +7,7 @@ using NHibernate.Cfg;
 using NHibernate;
 using NHibernate.Context;
 using NHibernate.Mapping.ByCode;
+using FlyFetch.DemoApp.Entities;
 
 namespace FlyFetch.DemoApp
 {
@@ -64,9 +65,35 @@ namespace FlyFetch.DemoApp
             //NH
             cfg = new Configuration();
             cfg.Configure();
-            
-            //ModelMapper
-           
+            LoggerProvider.SetLoggersFactory(new QueryLoggerFactory());
+            ModelMapper mapper = new ModelMapper(new SimpleModelInspector());
+
+            mapper.Class<Contact>(
+                k => { 
+                    k.Id(i => i.ContactID, m => m.Generator(Generators.Native));
+                    k.Schema("Person");
+                } 
+                );
+            mapper.Class<Employee>(
+                k => 
+                {
+                    k.Id(i => i.EmployeeID, m => m.Generator(Generators.Native));
+                    k.Schema("HumanResources");
+                    k.ManyToOne(c => c.Contact, m => m.Column("ContactID"));
+                }
+                );
+            mapper.Class<SalesOrderHeader>(
+                k =>
+                {
+                    k.Id(i => i.SalesOrderID,m=>m.Generator(Generators.Native));
+                    k.Schema("Sales");
+                    k.ManyToOne(c => c.SalesPerson, m => m.Column("SalesPersonID"));
+                    k.ManyToOne(c => c.Contact, m => m.Column("ContactID"));
+                }
+                );
+
+            var map = mapper.CompileMappingForAllExplicitlyAddedEntities();
+            cfg.AddDeserializedMapping(map,string.Empty);
             factory = cfg.BuildSessionFactory();
             
         }

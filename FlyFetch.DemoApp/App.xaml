@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <loc:Boot x:Key="boot" ></loc:Boot>
+                    <loc:BoolToSemaphore x:Key="boolToSemaphore"/>
                 </ResourceDictionary>
 
             </ResourceDictionary.MergedDictionaries>

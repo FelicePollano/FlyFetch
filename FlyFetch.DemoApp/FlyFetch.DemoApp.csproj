@@ -66,13 +66,24 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended">
+      <HintPath>Lib\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoolToSemaphore.cs" />
+    <Compile Include="Entities\Contact.cs" />
+    <Compile Include="Entities\Employee.cs" />
+    <Compile Include="Entities\SalesOrderHeader.cs" />
+    <Compile Include="INotifyDataSourceHit.cs" />
+    <Compile Include="LoggerFactory.cs" />
     <Compile Include="MainWindowModel.cs" />
+    <Compile Include="SalesOrderHeaderQueryObject.cs" />
+    <Compile Include="SalesOrderHeaderViewItem.cs" />
     <Compile Include="TraceLogger.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -121,6 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Lib\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FlyFetch\FlyFetch.csproj">
+      <Project>{EA3D452A-443F-4174-812B-10793F7947B0}</Project>
+      <Name>FlyFetch</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
