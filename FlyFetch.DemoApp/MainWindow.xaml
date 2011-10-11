@@ -8,7 +8,7 @@
         Title="MainWindow" Height="600" Width="800">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <cm:ActionMessage MethodName="Loaded"></cm:ActionMessage>
+            <!--<cm:ActionMessage MethodName="Loaded"></cm:ActionMessage>-->
         </i:EventTrigger>
     </i:Interaction.Triggers>
         <Grid>
@@ -17,10 +17,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Margin="10,2,2,2" x:Name="Load" Content="Show data"  />
             <Label FontSize="14" FontWeight="Bold">Total record=</Label>
             <Label Foreground="GreenYellow" FontSize="14" FontWeight="Bold" Content="{Binding Count}"></Label>
             <Label FontSize="14" FontWeight="Bold">Data source query=</Label>
             <Ellipse Height="12" Width="12" Stroke="Black" StrokeThickness="1" Fill="{Binding DataSourceHit, Converter={StaticResource boolToSemaphore}}"/>
+            
         </StackPanel>
         <ext:BusyIndicator Grid.Row="1" IsBusy="{Binding Busy}">
 

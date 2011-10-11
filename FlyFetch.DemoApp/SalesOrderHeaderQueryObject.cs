@@ -72,6 +72,8 @@ namespace FlyFetch.DemoApp
                             .Skip(first)
                             .Take(count)
                             .ToList();
+
+
                         for (int i = 0; i < list.Count; ++i)
                         {
                             var r = list[i];

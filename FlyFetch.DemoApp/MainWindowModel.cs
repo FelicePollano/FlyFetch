@@ -45,7 +45,7 @@ namespace FlyFetch.DemoApp
         }
         
 
-        public IEnumerable<IResult> Loaded()
+        public IEnumerable<IResult> Load()
         {
             Busy = true;
             var qo = new SalesOrderHeaderQueryObject(this,

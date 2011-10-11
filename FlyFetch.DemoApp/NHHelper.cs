@@ -79,7 +79,7 @@ namespace FlyFetch.DemoApp
                 {
                     k.Id(i => i.EmployeeID, m => m.Generator(Generators.Native));
                     k.Schema("HumanResources");
-                    k.ManyToOne(c => c.Contact, m => m.Column("ContactID"));
+                    k.ManyToOne(c => c.Contact, m => { m.Column("ContactID"); m.Lazy(LazyRelation.NoLazy); m.Fetch(FetchKind.Join); });
                 }
                 );
             mapper.Class<SalesOrderHeader>(
