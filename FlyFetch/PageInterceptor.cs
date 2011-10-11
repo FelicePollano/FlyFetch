@@ -40,16 +40,18 @@ namespace FlyFetch
             }
             if (fetch)
             {
-                pageFiller.Completed += (s, e) =>
+                EventHandler handler = null;
+                handler = ( s,  e) =>
+                {
+                    lock (pagesHit)
                     {
-                        lock (pagesHit)
-                        {
-                            pagesHit.Remove(npage);
-                        }
-                        foreach (var pe in collection.Skip(npage * pageSize).Take(pageSize).OfType<IPageableElement>())
-                            pe.Loaded = true;
-
-                    };
+                        pagesHit.Remove(npage);
+                    }
+                    foreach (var pe in collection.Skip(npage * pageSize).Take(pageSize).OfType<IPageableElement>())
+                        pe.Loaded = true;
+                    pageFiller.Completed -= handler;
+                };
+                pageFiller.Completed += handler;
                 //prepare single item data
                 int first = npage * pageSize;
                 for (int i = first; i < first + pageSize; ++i)
