@@ -68,7 +68,7 @@ namespace FlyFetch.DemoApp
                     {
                         var list = NHHelper.Instance.CurrentSession.Query<SalesOrderHeader>()
                             .Fetch(k => k.Contact)
-                            .Fetch(k => k.SalesPerson)
+                            .Fetch(k => k.SalesPerson).ThenFetch(k=>k.Contact)
                             .Skip(first)
                             .Take(count)
                             .ToList();
