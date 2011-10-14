@@ -7,12 +7,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFetch.Test", "FlyFetch.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C6D7A5B4-971D-4034-A8D1-05F045C3FA55}"
 	ProjectSection(SolutionItems) = preProject
+		FlyFetch1.vsmdi = FlyFetch1.vsmdi
 		Local.testsettings = Local.testsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFetch.DemoApp", "FlyFetch.DemoApp\FlyFetch.DemoApp.csproj", "{E0537ACB-831F-4AE0-9AA0-0E650F9921A9}"
 EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = FlyFetch1.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
