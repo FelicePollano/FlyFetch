@@ -32,7 +32,7 @@ namespace FlyFetch
                     {
                         var t = ProxyFactory.CreateProxy<T>(new PageInterceptor<T,TColl>(pageProvider,pageSize,collection));
                         (t as IPageableElement).PageIndex = i / pageSize;
-                        for (int j = i; j < i + pageSize;++j )
+                        for (int j = i; j < i + pageSize && j<e.Count;++j )
                             collection.Add(t);
                     }
                     created(collection);

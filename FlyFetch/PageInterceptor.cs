@@ -54,7 +54,7 @@ namespace FlyFetch
                 pageFiller.Completed += handler;
                 //prepare single item data
                 int first = npage * pageSize;
-                for (int i = first; i < first + pageSize; ++i)
+                for (int i = first; i < first + pageSize && i < collection.Count; ++i)
                 {
                     collection[i] = new T();
                 }
